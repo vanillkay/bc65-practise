@@ -174,3 +174,18 @@ function range(start, end, step = 1){
 }
 
 //---------------------
+
+const users = [
+    {
+        name: 'Ann',
+        age: 18
+    },
+    {
+        name: 'John',
+        age: 22
+    },
+    {
+        name: 'Sara',
+        age: 16
+    }
+]
