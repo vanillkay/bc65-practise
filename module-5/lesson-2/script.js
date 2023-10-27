@@ -94,9 +94,82 @@ programmer.salary = 79000;
 //     - отримання інформації про доставку (метод - приватний, аргументи - адреса, ціна за все замовлення. Ціна за доставку обраховується так –  1% від ціни,
 //       якщо ціна більше 2000 - доставка безкоштовно);
 //     - друк чеку (приватний, цей метод отримує об'єкт замовлення і виводить в консоль)
-//     - замовлення товару ( публічний, розраховую ціну товару,доставки та генерує об'єкт замовлення
+//     - замовлення товару ( публічний, розраховує ціну товару,доставки та генерує об'єкт замовлення
 //       { адреса, товар, кількість, ціна за доставку, ціна за замовлення})
 //
+
+class Product {
+    static ordersCount = 0;
+    static recordOrder(){
+        Product.ordersCount++;
+    }
+
+    #id;
+    constructor({shortName, fullName, description, price}) {
+        this.shortName = shortName;
+        this.fullName = fullName;
+        this.description = description;
+        this.price = price;
+        this.#id = generateRandomId();
+    }
+
+    #getOrderPrice(amount) {
+        let orderPrice = 0;
+        if (amount > 20) {
+            orderPrice = (amount * this.price) * 0.85;
+        } else {
+            orderPrice = (amount * this.price);
+        }
+        return orderPrice;
+    }
+
+    #deliverInfo(address, orderPrice) {
+        let deliverPrice = 0;
+        if (orderPrice <= 2000) {
+            deliverPrice = orderPrice * 0.01;
+        }
+        return {address, deliverPrice};
+    }
+
+    #printOrder(order) {
+        console.table(order);
+    }
+
+    makeOrder(address, amount) {
+        Product.recordOrder();
+        const orderPrice = this.#getOrderPrice(amount);
+        const {address:deliveryAddress, deliverPrice} = this.#deliverInfo(address, orderPrice);
+        // console.log('get the address', deliveryAddress)
+        const totalPrice = deliverPrice + orderPrice;
+        const order  = {
+            deliveryAddress,
+            amount,
+            orderPrice,
+            deliverPrice,
+            totalPrice,
+            product: this
+        }; 
+
+        console.log('Your order: ');
+        this.#printOrder(order);
+        return order;
+    }
+}
+
+const firstProduct = new Product({
+    shortName: 'product',
+    fullName: 'firstProduct',
+    description: 'description of product',
+    price: 1000
+})
+
+
+// firstProduct.makeOrder('address', 1);
+// firstProduct.makeOrder('address', 1);
+// firstProduct.makeOrder('address', 1);
+
+// console.log('sells', Product.ordersCount)
+
 
 //-------------------------
 
@@ -185,13 +258,21 @@ const frog = new Car({
 // -showAllEngines ( виводить список усіх старих двигунів літака та поточного )
 
 
-const generateRandomNumber = (min = 0, max = 10) => Math.floor(Math.random() * (max - min + 1)) + min
+function generateRandomNumber(min = 0, max = 10){return Math.floor(Math.random() * (max - min + 1)) + min}
 
 
-const getRandomUpperLetter = () => String.fromCharCode(generateRandomNumber(65, 90))
+function getRandomUpperLetter(){return String.fromCharCode(generateRandomNumber(65, 90))}
 
+function generateRandomId(){
+    const firstLetter = getRandomUpperLetter();
+    const secondLetter = getRandomUpperLetter();
 
-const generateRandomPlaneNumber = () => {
+    const numbers = Array.from({ length: 8 }).fill(null).map(() => generateRandomNumber(0, 9));
+
+    return [firstLetter, secondLetter, ...numbers].join("");
+}
+
+function generateRandomPlaneNumber(){
     const firstLetter = getRandomUpperLetter();
     const secondLetter = getRandomUpperLetter();
 
@@ -242,16 +323,54 @@ const litachok = new AirPlane({currentSpeed: 250,
     country: 'Ukraine',
     oldEngines: [generateRandomPlaneNumber()]})
 
-    console.log(litachok.info())
-    litachok.updateEngine(generateRandomPlaneNumber())
-    litachok.showAllEngines()
+    // console.log(litachok.info())
+    // litachok.updateEngine(generateRandomPlaneNumber())
+    // litachok.showAllEngines()
 
 // 3) Ship (усі поля від Vehicle + type, name, engine, color, passengers: {name, age, ticket} [] ( приватне ) ) + методи)
 // -info (описує поведінку корабля),
 // -addPassenger ( якщо пасажира ще немає на борту – додати його у список passengers, якщо є вивести помилку )
 
 
+class Shape{
+
+    static isShapeDescendant = (obj) =>  obj instanceof Square 
+
+    constructor( color ){
+        this.color = color;
+    }
+
+    getArea(){
+
+    }
+
+}
+
+class Circle extends Shape{
+    constructor(color, radius){
+      super(color);
+      this.radius=radius;
+    }
+    
+    getArea(){
+        return Math.PI*Math.pow(this.radius, 2);
+    }
+}
 
 
+class Square extends Shape{
+    constructor(color, side){
+        super(color);
+        this.side=side;
+    }
 
+    getArea(){
+        return Math.pow(this.side, 2);
+    }
+}
+
+const firstCircle= new Circle('red', 200);
+const firstSquare = new Square('green', 150);
+console.log('firstCircle', Shape.isShapeDescendant(firstCircle));
+console.log('firstSquare', Shape.isShapeDescendant(firstSquare));
 //-------------------------
