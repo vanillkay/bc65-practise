@@ -114,3 +114,109 @@ function getRandomHexColor() {
         .toString(16)
         .padStart(6, 0)}`;
 }
+
+
+// const getOnDrawBtnClickListener = (inputEl) = () => {
+//     // console.log(inputEl.value);
+//     if (inputEl.value <= 0) {
+//         alert('Введене невалідне значення радіусу! SOS!');
+//         return;
+//     }
+//     const documentFragment  = document.createDocumentFragment();
+    
+//     for (let i = 0; i < 100; i += 1){
+//         const circleEl = document.createElement('div');
+//         circleEl.dataset.type = 'circle';
+//         circleEl.style.width = inputEl.value + 'px';
+//         circleEl.style.height = inputEl.value + 'px';
+//         circleEl.style.borderRadius = '50%';
+//         circleEl.style.backgroundColor = getRandomHexColor();
+//         documentFragment.append(circleEl);
+//     }
+
+//     circleContainerEl.append(documentFragment)
+// }
+
+function getOnDrawBtnClickListener(inputEl){
+    // console.log(inputEl.value);
+    
+    return function listener(){
+        if (inputEl.value <= 0) {
+            alert('Введене невалідне значення радіусу! SOS!');
+            return;
+        }
+        const documentFragment  = document.createDocumentFragment();
+        
+        for (let i = 0; i < 100; i += 1){
+            const circleEl = document.createElement('div');
+            circleEl.dataset.type = 'circle';
+            circleEl.style.width = inputEl.value + 'px';
+            circleEl.style.height = inputEl.value + 'px';
+            circleEl.style.borderRadius = '50%';
+            circleEl.style.backgroundColor = getRandomHexColor();
+            documentFragment.append(circleEl);
+        }
+    
+        circleContainerEl.append(documentFragment)
+    }
+}
+
+
+const startBtnEl = document.querySelector('.draw-btn');
+
+anime({
+    targets: '.draw-btn',
+    translateX: 250,
+    rotate: '1turn',
+    backgroundColor: '#FFF',
+    duration: 800,
+    // loop: true
+  });
+
+const containerEl = document.querySelector('#circle-task');
+const circleContainerEl = document.querySelector('#root');
+
+const onStartBtnClick = () => {
+    const inputEl = document.createElement('input');
+    const drawBtnEl = document.createElement('button');
+    drawBtnEl.textContent = "Намалювати коло";
+    startBtnEl.remove();
+    containerEl.append(inputEl, drawBtnEl);
+    inputEl.type = 'number';
+
+    // drawBtnEl.addEventListener('click', (event) => {
+    //     // console.log(inputEl.value);
+    //     if (inputEl.value <= 0) {
+    //         alert('Введене невалідне значення радіусу! SOS!');
+    //         return;
+    //     }
+    //     const documentFragment  = document.createDocumentFragment();
+        
+    //     for (let i = 0; i < 100; i += 1){
+    //         const circleEl = document.createElement('div');
+    //         circleEl.dataset.type = 'circle';
+    //         circleEl.style.width = inputEl.value + 'px';
+    //         circleEl.style.height = inputEl.value + 'px';
+    //         circleEl.style.borderRadius = '50%';
+    //         circleEl.style.backgroundColor = getRandomHexColor();
+    //         documentFragment.append(circleEl);
+    //     }
+
+    //     circleContainerEl.append(documentFragment)
+    // })
+
+    // V2
+    drawBtnEl.addEventListener('click', getOnDrawBtnClickListener(inputEl))
+
+    circleContainerEl.addEventListener('click', (event) => {
+        if (event.target.dataset.type !== 'circle') {
+            return;
+            
+        }
+        event.target.remove();
+        
+    })
+}
+
+startBtnEl.addEventListener('click', onStartBtnClick)
+
