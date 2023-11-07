@@ -6,13 +6,13 @@
 // При кліку на кнопку ви маєте прочитати значення інпуту, перевести його в потрібний кейс 
 // за допомогою одного з методів бібліотеки voca (camelCase, kebebCase ...) та записати результат у span,
 // який знаходиться поруч з натиснутою кнопкою ( наступний сусід )
-import voca from 'voca';
+// import voca from 'voca';
 
 
-const insertInput = document.querySelector('input');
-const divListerner = document.querySelector('.controls');
-divListerner.addEventListener('click', transformText);
-console.log(insertInput)
+// const insertInput = document.querySelector('input');
+// const divListerner = document.querySelector('.controls');
+// divListerner.addEventListener('click', transformText);
+// console.log(insertInput)
 function transformText(event) { 
     
     if (event.target.tagName != 'BUTTON') { 
@@ -41,7 +41,7 @@ function transformText(event) {
     //     return;
     // }
 
-    kenny.nextElementSibling.textContent = voca[needeMethod](insertInput.value);
+    // kenny.nextElementSibling.textContent = voca[needeMethod](insertInput.value);
 
     // switch(event.target.dataset.case) { 
     //     case 'camelCase':
@@ -73,3 +73,43 @@ function transformText(event) {
     // }
 
 }
+
+
+const obj = {
+    "breeds": [
+        {
+            "weight": {
+                "imperial": "65 - 75",
+                "metric": "29 - 34"
+            },
+            "height": {
+                "imperial": "21 - 28",
+                "metric": "53 - 71"
+            },
+            "id": 14,
+            "name": "American Foxhound",
+            "country_code": "US",
+            "bred_for": "Fox hunting, scent hound",
+            "breed_group": "Hound",
+            "life_span": "8 - 15 years",
+            "temperament": "Kind, Sweet-Tempered, Loyal, Independent, Intelligent, Loving",
+            "reference_image_id": "S14n1x9NQ"
+        }
+    ],
+    "id": "S14n1x9NQ",
+    "url": "https://cdn2.thedogapi.com/images/S14n1x9NQ_1280.jpg",
+    "width": 3000,
+    "height": 2400
+}
+
+
+const {
+    url, 
+    breeds: [{
+        bred_for,
+        temperament
+    }]} = obj;
+
+
+console.log(url,  bred_for,
+    temperament)
